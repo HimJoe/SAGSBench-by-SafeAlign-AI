@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+title: "SAGSBench by SafeAlign AI"
+message: "If you use SAGSBench, please cite the project and the associated workshop paper."
+type: software
+authors:
+  - family-names: Joshi
+    given-names: Himanshu
+    affiliation: "COHUMAIN Labs / SafeAlign AI"
+  - family-names: Shukla
+    given-names: Shivani
+    affiliation: "University of San Francisco"
+  - family-names: Joshi
+    given-names: Manas
+    affiliation: "COHUMAIN Labs"
+  - family-names: Kumari
+    given-names: Sunita
+    affiliation: "COHUMAIN Labs"
+repository-code: "https://github.com/CoHumAInLabs/SAGSBench-by-SafeAlign-AI"
+url: "https://cohumainlabs.github.io/SAGSBench-by-SafeAlign-AI/frontend/"
+license: Apache-2.0
+keywords:
+  - ai safety
+  - red teaming
+  - agentic ai
+  - governance
+  - security
+  - alignment
+references:
+  - type: conference-paper
+    title: "Governance- and Security-by-Design: Embedding Safety and Alignment into Agentic AI Systems"
+    authors:
+      - family-names: Joshi
+        given-names: Himanshu
+      - family-names: Shukla
+        given-names: Shivani
+      - family-names: Joshi
+        given-names: Manas
+      - family-names: Kumari
+        given-names: Sunita
+    collection-title: "ICLR 2026 Workshop on Agents in the Wild: Safety, Security, and Beyond"
+    year: 2026
+    url: "https://openreview.net/forum?id=EfntnSDsdu"

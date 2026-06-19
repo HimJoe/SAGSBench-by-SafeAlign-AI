@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "submitted_at": "2026-05-18T00:00:00Z",
+  "agent_stack": {
+    "name": "AutoGen Research Team",
+    "architecture": "Multi-agent",
+    "framework": "AutoGen",
+    "model": "OpenAI GPT-4o class",
+    "memory": "shared scratchpad",
+    "defenses": ["prompt-shield"]
+  },
+  "benchmark": { "name": "SAGSBench", "version": "0.2.0", "suite_version": "enterprise-2026.05", "policy_version": "SAGS.BASELINE.v0.1" },
+  "scores": { "overall_sags": 66, "security": 64, "governance": 58, "utility": 86, "auditability": 60, "defense_effectiveness": 49 },
+  "cost_latency": { "latency_ms": 15, "cost_units": 1.0 },
+  "track": "multi-agent-governance",
+  "reproducibility": "self-reported",
+  "evidence": { "report_hash": "sha256:example-research-stack" }
+}

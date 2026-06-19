@@ -19,6 +19,11 @@
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
+    <div class="launch-banner" role="note">
+      <span class="launch-pill">Launching at TMLS 2026</span>
+      <span>SAGSBench is presented at the <a href="https://iclr.cc/virtual/2026/10016356" rel="noopener noreferrer">ICLR 2026 Workshop — Agents in the Wild</a> and the <a href="https://www.torontomachinelearning.com/presenter/himanshu-joshi/" rel="noopener noreferrer">Toronto Machine Learning Summit 2026</a>.</span>
+    </div>
+
     <header class="site-header" id="top">
       <a class="brand" href="#top" aria-label="SAGSBench home">
         <img src="assets/safealign-ai-logo.png" alt="SafeAlign AI" class="brand-logo" />
@@ -28,8 +33,9 @@
       <nav class="nav" id="site-nav" aria-label="Main navigation">
         <a href="#overview">Overview</a>
         <a href="#quickstart">Quick start</a>
+        <a href="#defense">Defense Mode</a>
+        <a href="leaderboard.html">Leaderboard</a>
         <a href="#frameworks">Frameworks</a>
-        <a href="#security">Security</a>
         <a href="#reports">Reports</a>
       </nav>
       <div class="header-actions">
@@ -43,16 +49,17 @@
         <div class="hero-copy reveal">
           <div class="eyebrow"><span class="status-dot"></span> unified red-team plane for agentic AI</div>
           <h1>RED-TEAM <span>PRODUCTION AGENTS</span> WITH SAGSBENCH</h1>
-          <p class="lead">Open-source Safety, Alignment, Governance, and Security benchmarking for AI agents — built to test attacks, evaluate failures, produce evidence, and improve guardrails before production.</p>
+          <p class="lead">Open-source Safety, Alignment, Governance, and Security benchmarking for AI agents — test attacks, <strong>compare defenses</strong>, produce evidence, and rank agent stacks on a public leaderboard before production.</p>
           <div class="hero-actions">
             <a class="button" href="#quickstart">Start testing</a>
-            <a class="ghost strong" href="#reports">View sample report</a>
-            <a class="ghost strong" href="https://github.com/CoHumAInLabs/SAGSBench-by-SafeAlign-AI" rel="noopener noreferrer">View source</a>
+            <a class="ghost strong" href="#defense">Compare defenses</a>
+            <a class="ghost strong" href="leaderboard.html">View leaderboard</a>
           </div>
           <div class="metric-row" aria-label="SAGSBench highlights">
-            <span><b>164</b> probes</span>
             <span><b>4</b> SAGS domains</span>
-            <span><b>5</b> export formats</span>
+            <span><b>8</b> defenses</span>
+            <span><b>5</b> leaderboard tracks</span>
+            <span><b>6</b> report formats</span>
           </div>
         </div>
 
@@ -99,6 +106,7 @@
           <div class="tabs" role="tablist" aria-label="Quickstart examples">
             <button class="tab active" type="button" role="tab" aria-selected="true" aria-controls="tab-cli" data-tab="cli">CLI</button>
             <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="tab-http" data-tab="http">HTTP Agent</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="tab-defenses" data-tab="defenses">Defense Mode</button>
             <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="tab-openai" data-tab="openai">OpenAI-compatible</button>
             <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="tab-ci" data-tab="ci">GitHub Action</button>
           </div>
@@ -115,32 +123,63 @@ sagsbench scan \
 
           <section class="code-panel" id="tab-http" role="tabpanel" hidden>
             <div class="code-toolbar"><span>http-target.py</span><button class="copy-button" type="button" data-copy-target="code-http">Copy</button></div>
-            <pre><code id="code-http">from sagsbench import Campaign
-from sagsbench.adapters import HTTPTarget
+            <pre><code id="code-http">from sagsbench import Campaign, HTTPAgentTarget
+from sagsbench.attacks import BaselineAttackSuite
+from sagsbench.judges import RegexJudge, PolicyJudge
 
-target = HTTPTarget(
-    name="customer-support-agent",
-    endpoint="http://localhost:8000/chat",
-    input_key="message",
-    output_key="response",
+campaign = Campaign(
+    target=HTTPAgentTarget(
+        name="customer-support-agent",
+        endpoint="http://localhost:8000/chat",
+        input_key="message",
+        output_key="response",
+    ),
+    suites=[BaselineAttackSuite.from_builtin("enterprise")],
+    judges=[RegexJudge(), PolicyJudge.from_builtin("sags_baseline")],
 )
 
-result = Campaign.enterprise(target=target).run()
-result.to_html("reports/sagsbench-report.html")</code></pre>
+campaign.run().to_html("reports/sagsbench-report.html")</code></pre>
+          </section>
+
+          <section class="code-panel" id="tab-defenses" role="tabpanel" hidden>
+            <div class="code-toolbar"><span>evaluate-defenses.py</span><button class="copy-button" type="button" data-copy-target="code-defenses">Copy</button></div>
+            <pre><code id="code-defenses">from sagsbench import evaluate_defenses, make_defense_stack, HTTPAgentTarget
+from sagsbench.attacks import BaselineAttackSuite
+from sagsbench.judges import RegexJudge, PolicyJudge
+
+result = evaluate_defenses(
+    target=HTTPAgentTarget(name="agent", endpoint="http://localhost:8000/chat"),
+    attack_suite=BaselineAttackSuite.from_builtin("enterprise"),
+    benign_suite=BaselineAttackSuite.from_builtin("benign"),
+    variants=[
+        ("no-defense", make_defense_stack("no-defense")),
+        ("tool-filter", make_defense_stack("tool-filter")),
+        ("combined", make_defense_stack("policy-engine+approval-gate+tool-filter")),
+    ],
+    judges=[RegexJudge(), PolicyJudge.from_builtin("sags_baseline")],
+)
+print("Recommended stack:", result.best_variant)
+result.to_html("reports/sagsbench-defenses.html")</code></pre>
           </section>
 
           <section class="code-panel" id="tab-openai" role="tabpanel" hidden>
             <div class="code-toolbar"><span>openai-compatible.py</span><button class="copy-button" type="button" data-copy-target="code-openai">Copy</button></div>
             <pre><code id="code-openai">from sagsbench import Campaign
 from sagsbench.adapters import OpenAICompatibleTarget
+from sagsbench.attacks import BaselineAttackSuite
+from sagsbench.judges import RegexJudge, PolicyJudge
 
-target = OpenAICompatibleTarget(
-    name="governed-agent",
-    base_url="https://api.openai.com/v1",
-    model="gpt-4o-mini",
+campaign = Campaign(
+    target=OpenAICompatibleTarget(
+        name="governed-agent",
+        base_url="https://api.openai.com/v1",
+        model="gpt-4o-mini",
+    ),
+    suites=[BaselineAttackSuite.from_builtin("enterprise")],
+    judges=[RegexJudge(), PolicyJudge.from_builtin("sags_baseline")],
 )
 
-Campaign.enterprise(target=target).run().to_sarif("reports/sagsbench.sarif")</code></pre>
+campaign.run().to_sarif("reports/sagsbench.sarif")</code></pre>
           </section>
 
           <section class="code-panel" id="tab-ci" role="tabpanel" hidden>
@@ -158,19 +197,64 @@ jobs:
         </div>
       </section>
 
+      <section class="defense section-pad" id="defense">
+        <div class="section-heading split reveal">
+          <div>
+            <div class="eyebrow">New · Defense Evaluation Mode</div>
+            <h2>Prove which defenses actually reduce risk.</h2>
+          </div>
+          <p>Run the same attack and governance suites against a baseline and one or more defense variants. SAGSBench replays identical cases, then compares attack success, governance failures, task completion, false positives, latency, and audit completeness — and recommends a stack.</p>
+        </div>
+        <div class="defense-compare reveal">
+          <table class="lb-table">
+            <thead>
+              <tr><th>Defense variant</th><th>Attack success</th><th>Gov. failures</th><th>Task completion</th><th>Latency</th><th>Effectiveness</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><b>No defense</b><br><small>baseline</small></td><td>100%</td><td>100%</td><td>100%</td><td>+0 ms</td><td class="score">21<div class="bar"><span class="w-21"></span></div></td></tr>
+              <tr><td><b>Tool filter</b><br><small>low-cost default</small></td><td>80%</td><td>67%</td><td>100%</td><td>+20 ms</td><td class="score">38<div class="bar"><span class="w-38"></span></div></td></tr>
+              <tr><td><b>Policy engine</b><br><small>best governance gain</small></td><td>40%</td><td>33%</td><td>100%</td><td>+65 ms</td><td class="score">64<div class="bar"><span class="w-64"></span></div></td></tr>
+              <tr class="best"><td><b>Combined stack</b><br><small>recommended</small></td><td>20%</td><td>33%</td><td>100%</td><td>+180 ms</td><td class="score">68<div class="bar"><span class="w-68"></span></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="defense-features reveal">
+          <article><h3>8 pluggable defenses</h3><p>Tool filter, approval gate, policy engine, memory sandbox, prompt shield, runtime monitor, RBAC, and kill switch — composed with <code>+</code>.</p></article>
+          <article><h3>Defense Effectiveness Score</h3><p>A configurable 0–100 score rewarding risk reduction, governance, and audit completeness while penalizing false positives, latency, and cost.</p></article>
+          <article><h3>Regression in CI</h3><p>Gate every pull request so safety controls can’t silently weaken over time.</p></article>
+        </div>
+        <div class="hero-actions reveal"><a class="button" href="https://github.com/CoHumAInLabs/SAGSBench-by-SafeAlign-AI/blob/main/docs/DEFENSE_EVALUATION.md" rel="noopener noreferrer">Read the guide</a><a class="ghost strong" href="#quickstart">See the snippet</a></div>
+      </section>
+
+      <section class="leaderboard-cta section-pad" id="leaderboard">
+        <div class="section-heading split reveal">
+          <div>
+            <div class="eyebrow">New · Public Leaderboard</div>
+            <h2>Rank agent stacks, not just models.</h2>
+          </div>
+          <p>Enterprise agent risk depends on the whole architecture — model + framework + tools + memory + approval flow + policy layer + monitoring. The SAGSBench leaderboard ranks stacks by track with verified, reproducible, and community-checked submissions.</p>
+        </div>
+        <div class="cards three reveal">
+          <article><span>01</span><h3>5 use-case tracks</h3><p>Customer support, finance/procurement, HR, DevOps/SRE, and multi-agent governance — each with its own risks.</p></article>
+          <article><span>02</span><h3>Verification levels</h3><p>Self-reported, reproducible, community-verified, maintainer-verified, and private enterprise boards.</p></article>
+          <article><span>03</span><h3>Anti-gaming by design</h3><p>Hidden splits, versioned suites, audit-evidence requirements, and a task-utility floor so agents can’t win by refusing everything.</p></article>
+        </div>
+        <div class="hero-actions reveal"><a class="button" href="leaderboard.html">Open the leaderboard</a><a class="ghost strong" href="https://github.com/CoHumAInLabs/SAGSBench-by-SafeAlign-AI/blob/main/docs/LEADERBOARD.md" rel="noopener noreferrer">How to submit</a></div>
+      </section>
+
       <section class="frameworks section-pad" id="frameworks">
         <div class="section-heading centered reveal">
           <div class="eyebrow">Framework coverage</div>
           <h2>Designed for the agent stacks teams actually ship.</h2>
-          <p>HackAgent’s public site highlights quick-start snippets, attack runs, agent listings, reports, and framework support. SAGSBench keeps that developer-friendly flow and adds SAGS governance assurance.</p>
+          <p>A developer-friendly flow — quick-start snippets, attack runs, reports, and framework support — with SAGS governance assurance built in.</p>
         </div>
         <div class="framework-matrix reveal">
-          <article class="available"><div>HTTP</div><h3>Generic HTTP</h3><p>Connect to any endpoint that accepts chat, task, or instruction payloads.</p><span>Available now</span></article>
-          <article class="available"><div>API</div><h3>OpenAI-compatible</h3><p>Test agents behind OpenAI-style APIs and enterprise gateways.</p><span>Available now</span></article>
-          <article><div>LLM</div><h3>LiteLLM / Ollama</h3><p>Route tests through local models or brokered model endpoints.</p><span>Adapter-ready</span></article>
-          <article><div>LC</div><h3>LangChain</h3><p>Evaluate chains, tools, and agent executors with guardrail expectations.</p><span>Roadmap</span></article>
-          <article><div>LG</div><h3>LangGraph</h3><p>Probe graph state transitions, branches, escalation nodes, and policy gates.</p><span>Roadmap</span></article>
-          <article><div>MA</div><h3>Multi-agent</h3><p>Assess delegation, collaboration, and inter-agent trust exploitation.</p><span>Roadmap</span></article>
+          <article class="available"><a class="stretch" href="#quickstart" aria-label="Generic HTTP adapter — see quick start"></a><div>HTTP</div><h3>Generic HTTP</h3><p>Connect to any endpoint that accepts chat, task, or instruction payloads.</p><span>Available now</span></article>
+          <article class="available"><a class="stretch" href="#quickstart" aria-label="OpenAI-compatible adapter — see quick start"></a><div>API</div><h3>OpenAI-compatible</h3><p>Test agents behind OpenAI-style APIs and enterprise gateways.</p><span>Available now</span></article>
+          <article><a class="stretch" href="https://github.com/CoHumAInLabs/SAGSBench-by-SafeAlign-AI/tree/main/sagsbench/adapters" rel="noopener noreferrer" aria-label="LiteLLM / Ollama adapter on GitHub"></a><div>LLM</div><h3>LiteLLM / Ollama</h3><p>Route tests through local models or brokered model endpoints.</p><span>Adapter-ready</span></article>
+          <article><a class="stretch" href="https://github.com/CoHumAInLabs/SAGSBench-by-SafeAlign-AI/blob/main/docs/ROADMAP.md" rel="noopener noreferrer" aria-label="LangChain support — see roadmap"></a><div>LC</div><h3>LangChain</h3><p>Evaluate chains, tools, and agent executors with guardrail expectations.</p><span>Roadmap</span></article>
+          <article><a class="stretch" href="https://github.com/CoHumAInLabs/SAGSBench-by-SafeAlign-AI/blob/main/docs/ROADMAP.md" rel="noopener noreferrer" aria-label="LangGraph support — see roadmap"></a><div>LG</div><h3>LangGraph</h3><p>Probe graph state transitions, branches, escalation nodes, and policy gates.</p><span>Roadmap</span></article>
+          <article><a class="stretch" href="https://github.com/CoHumAInLabs/SAGSBench-by-SafeAlign-AI/blob/main/docs/ROADMAP.md" rel="noopener noreferrer" aria-label="Multi-agent support — see roadmap"></a><div>MA</div><h3>Multi-agent</h3><p>Assess delegation, collaboration, and inter-agent trust exploitation.</p><span>Roadmap</span></article>
         </div>
       </section>
 
@@ -242,12 +326,16 @@ jobs:
           <p>SAGSBench is the developer-first red-team layer. SafeAlign AI-GovOS extends this into runtime monitoring, policy registries, kill switches, evidence workflows, and governance dashboards.</p>
           <div class="hero-actions"><a class="button" href="https://github.com/CoHumAInLabs/SAGSBench-by-SafeAlign-AI" rel="noopener noreferrer">Star on GitHub</a><a class="ghost strong" href="https://safealignai.io/" rel="noopener noreferrer">Explore SafeAlign</a></div>
         </div>
-        <pre><code>$ sagsbench scan --target http://localhost:8000/chat --profile enterprise
+        <pre><code>$ sagsbench evaluate-defenses --target http://localhost:8000/chat \
+    --variant tool-filter --variant policy-engine+approval-gate
 
-✓ 164 probes executed
-✓ 137 attacks blocked
-✓ reports/sagsbench-report.html
-✓ reports/sagsbench.sarif</code></pre>
+  variant                     attack  gov   task   score
+  no-defense                   100%   100%  100%   21/100
+  tool-filter                   80%    67%  100%   38/100
+  policy-engine+approval-gate   20%    12%   96%   68/100
+
+✓ recommended stack: policy-engine+approval-gate
+✓ reports/sagsbench-defenses.html</code></pre>
       </section>
     </main>
 

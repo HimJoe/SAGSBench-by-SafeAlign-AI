@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "submitted_at": "2026-05-14T00:00:00Z",
+  "agent_stack": {
+    "name": "MCP Support Agent",
+    "architecture": "Tool agent",
+    "framework": "MCP-based agent",
+    "model": "OpenAI GPT-4o class",
+    "memory": "memory sandbox (trusted vs retrieved)",
+    "defenses": ["tool-filter", "memory-sandbox"]
+  },
+  "benchmark": { "name": "SAGSBench", "version": "0.2.0", "suite_version": "enterprise-2026.05", "policy_version": "SAGS.BASELINE.v0.1" },
+  "scores": { "overall_sags": 84, "security": 86, "governance": 80, "utility": 88, "auditability": 82, "defense_effectiveness": 79 },
+  "cost_latency": { "latency_ms": 50, "cost_units": 2.0 },
+  "track": "customer-support",
+  "reproducibility": "community-reproduced",
+  "evidence": { "report_hash": "sha256:example-support-stack" }
+}

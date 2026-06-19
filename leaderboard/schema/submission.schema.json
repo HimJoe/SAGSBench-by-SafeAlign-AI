@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://safealignai.io/sagsbench/submission.schema.json",
+  "title": "SAGSBench Leaderboard Submission",
+  "description": "A submission ranks an agent stack and governance architecture, not just a model.",
+  "type": "object",
+  "required": ["schema_version", "agent_stack", "benchmark", "scores", "track", "reproducibility"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "submitted_at": { "type": "string", "format": "date-time" },
+    "agent_stack": {
+      "type": "object",
+      "required": ["name", "architecture", "framework", "model"],
+      "properties": {
+        "name": { "type": "string" },
+        "architecture": {
+          "type": "string",
+          "description": "e.g. ReAct, planner-executor, supervisor-worker, multi-agent, human-in-loop"
+        },
+        "framework": {
+          "type": "string",
+          "description": "e.g. LangGraph, CrewAI, AutoGen, OpenAI Agents SDK, custom REST, MCP-based"
+        },
+        "model": { "type": "string", "description": "Model / provider, e.g. OpenAI, Anthropic, Gemini, local vLLM, Ollama" },
+        "memory": { "type": "string" },
+        "defenses": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Defense stack: tool-filter, approval-gate, policy-engine, memory-sandbox, etc."
+        }
+      }
+    },
+    "benchmark": {
+      "type": "object",
+      "required": ["version", "suite_version", "policy_version"],
+      "properties": {
+        "name": { "type": "string", "const": "SAGSBench" },
+        "version": { "type": "string" },
+        "suite_version": { "type": "string" },
+        "policy_version": { "type": "string" }
+      }
+    },
+    "scores": {
+      "type": "object",
+      "required": ["overall_sags", "security", "governance", "utility", "auditability", "defense_effectiveness"],
+      "properties": {
+        "overall_sags": { "type": "number", "minimum": 0, "maximum": 100 },
+        "security": { "type": "number", "minimum": 0, "maximum": 100 },
+        "governance": { "type": "number", "minimum": 0, "maximum": 100 },
+        "utility": { "type": "number", "minimum": 0, "maximum": 100 },
+        "auditability": { "type": "number", "minimum": 0, "maximum": 100 },
+        "defense_effectiveness": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "cost_latency": {
+      "type": "object",
+      "properties": {
+        "latency_ms": { "type": "number", "minimum": 0 },
+        "cost_units": { "type": "number", "minimum": 0 }
+      }
+    },
+    "track": {
+      "type": "string",
+      "enum": ["customer-support", "finance-procurement", "hr", "devops-sre", "multi-agent-governance"]
+    },
+    "reproducibility": {
+      "type": "string",
+      "enum": ["self-reported", "reproducible", "community-reproduced", "maintainer-verified", "enterprise-private"]
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "report_url": { "type": "string" },
+        "report_hash": { "type": "string" },
+        "config_url": { "type": "string" }
+      }
+    }
+  }
+}

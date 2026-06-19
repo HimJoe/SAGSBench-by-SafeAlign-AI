@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <title>SAGSBench Public Leaderboard | SafeAlign AI</title>
+    <meta name="description" content="The SAGSBench public leaderboard ranks agent stacks and governance architectures by Safety, Alignment, Governance, and Security." />
+    <link rel="icon" href="assets/favicon-64.png" type="image/png" />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header" id="top">
+      <a class="brand" href="index.html" aria-label="SAGSBench home">
+        <img src="assets/safealign-ai-logo.png" alt="SafeAlign AI" class="brand-logo" />
+        <span class="brand-copy"><strong>SAGSBench</strong><em>by SafeAlign AI</em></span>
+      </a>
+      <nav class="nav" id="site-nav" aria-label="Leaderboard tracks">
+        <a href="#track-customer-support">Customer Support</a>
+<a href="#track-finance-procurement">Finance / Procurement</a>
+<a href="#track-hr">HR Agent</a>
+<a href="#track-devops-sre">DevOps / SRE</a>
+<a href="#track-multi-agent-governance">Multi-agent Governance</a>
+      </nav>
+      <div class="header-actions">
+        <a class="ghost" href="index.html">Home</a>
+        <a class="button small" href="https://github.com/CoHumAInLabs/SAGSBench-by-SafeAlign-AI" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero hero-solo section-pad">
+        <div class="hero-copy reveal">
+          <div class="eyebrow"><span class="status-dot"></span> community benchmark</div>
+          <h1>SAGSBench <span>PUBLIC LEADERBOARD</span></h1>
+          <p class="lead">Ranking agent stacks and governance architectures — not just models — by Safety, Alignment, Governance, and Security. Submit a SAGSBench report to compare your stack.</p>
+          <div class="hero-actions">
+            <a class="button" href="https://github.com/CoHumAInLabs/SAGSBench-by-SafeAlign-AI/blob/main/docs/LEADERBOARD.md" rel="noopener noreferrer">How to submit</a>
+            <a class="ghost strong" href="index.html#defense">Defense Evaluation Mode</a>
+          </div>
+        </div>
+      </section>
+      
+      <section class="lb-track section-pad" id="track-customer-support">
+        <div class="section-heading"><div class="eyebrow">Track</div><h2>Customer Support</h2></div>
+        <div class="lb-table-wrap">
+          <table class="lb-table">
+            <thead>
+              <tr><th>#</th><th>Agent stack</th><th>Architecture</th><th>Defense stack</th>
+              <th>SAGS</th><th>Sec.</th><th>Gov.</th><th>Utility</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class='rank'>1</td><td><b>MCP Support Agent</b><br><small>OpenAI GPT-4o class &middot; MCP-based agent</small></td><td>Tool agent</td><td><small>tool-filter, memory-sandbox</small></td><td class='score'>84</td><td>86</td><td>80</td><td>88</td><td><span class='lb-badge lb-community-reproduced'>Community verified</span></td></tr>
+<tr><td class='rank'>2</td><td><b>Baseline ReAct Agent</b><br><small>OpenAI GPT-4o-mini class &middot; custom REST agent</small></td><td>Single agent</td><td><small>none</small></td><td class='score'>51</td><td>48</td><td>38</td><td>91</td><td><span class='lb-badge lb-self-reported'>Self-reported</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="lb-track section-pad" id="track-finance-procurement">
+        <div class="section-heading"><div class="eyebrow">Track</div><h2>Finance / Procurement</h2></div>
+        <div class="lb-table-wrap">
+          <table class="lb-table">
+            <thead>
+              <tr><th>#</th><th>Agent stack</th><th>Architecture</th><th>Defense stack</th>
+              <th>SAGS</th><th>Sec.</th><th>Gov.</th><th>Utility</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class='rank'>1</td><td><b>LangGraph Finance Agent</b><br><small>Anthropic Claude (Opus class) &middot; LangGraph</small></td><td>Planner-executor</td><td><small>policy-engine, approval-gate, tool-filter</small></td><td class='score'>89</td><td>90</td><td>92</td><td>81</td><td><span class='lb-badge lb-maintainer-verified'>Verified</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="lb-track section-pad" id="track-hr">
+        <div class="section-heading"><div class="eyebrow">Track</div><h2>HR Agent</h2></div>
+        <div class="lb-table-wrap">
+          <table class="lb-table">
+            <thead>
+              <tr><th>#</th><th>Agent stack</th><th>Architecture</th><th>Defense stack</th>
+              <th>SAGS</th><th>Sec.</th><th>Gov.</th><th>Utility</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td colspan='9' class='empty'>No public submissions yet — be the first.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="lb-track section-pad" id="track-devops-sre">
+        <div class="section-heading"><div class="eyebrow">Track</div><h2>DevOps / SRE</h2></div>
+        <div class="lb-table-wrap">
+          <table class="lb-table">
+            <thead>
+              <tr><th>#</th><th>Agent stack</th><th>Architecture</th><th>Defense stack</th>
+              <th>SAGS</th><th>Sec.</th><th>Gov.</th><th>Utility</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class='rank'>1</td><td><b>CrewAI Ops Team</b><br><small>Anthropic Claude (Sonnet class) &middot; CrewAI</small></td><td>Multi-agent</td><td><small>runtime-monitor, approval-gate</small></td><td class='score'>78</td><td>77</td><td>75</td><td>79</td><td><span class='lb-badge lb-reproducible'>Reproducible</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="lb-track section-pad" id="track-multi-agent-governance">
+        <div class="section-heading"><div class="eyebrow">Track</div><h2>Multi-agent Governance</h2></div>
+        <div class="lb-table-wrap">
+          <table class="lb-table">
+            <thead>
+              <tr><th>#</th><th>Agent stack</th><th>Architecture</th><th>Defense stack</th>
+              <th>SAGS</th><th>Sec.</th><th>Gov.</th><th>Utility</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class='rank'>1</td><td><b>AutoGen Research Team</b><br><small>OpenAI GPT-4o class &middot; AutoGen</small></td><td>Multi-agent</td><td><small>prompt-shield</small></td><td class='score'>66</td><td>64</td><td>58</td><td>86</td><td><span class='lb-badge lb-self-reported'>Self-reported</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>&copy; 2026 SafeAlign AI / COHUMAIN Labs</span>
+      <a href="index.html">Home</a>
+      <a href="https://safealignai.io/" rel="noopener noreferrer">safealignai.io</a>
+      <a href="https://github.com/CoHumAInLabs/SAGSBench-by-SafeAlign-AI" rel="noopener noreferrer">GitHub</a>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "submitted_at": "2026-05-20T00:00:00Z",
+  "agent_stack": {
+    "name": "Baseline ReAct Agent",
+    "architecture": "Single agent",
+    "framework": "custom REST agent",
+    "model": "OpenAI GPT-4o-mini class",
+    "memory": "none",
+    "defenses": []
+  },
+  "benchmark": { "name": "SAGSBench", "version": "0.2.0", "suite_version": "enterprise-2026.05", "policy_version": "SAGS.BASELINE.v0.1" },
+  "scores": { "overall_sags": 51, "security": 48, "governance": 38, "utility": 91, "auditability": 40, "defense_effectiveness": 0 },
+  "cost_latency": { "latency_ms": 0, "cost_units": 0 },
+  "track": "customer-support",
+  "reproducibility": "self-reported",
+  "evidence": { "report_hash": "sha256:example-baseline-stack" }
+}

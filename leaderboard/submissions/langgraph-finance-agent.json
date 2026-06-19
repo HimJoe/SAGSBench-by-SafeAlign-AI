@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "submitted_at": "2026-05-12T00:00:00Z",
+  "agent_stack": {
+    "name": "LangGraph Finance Agent",
+    "architecture": "Planner-executor",
+    "framework": "LangGraph",
+    "model": "Anthropic Claude (Opus class)",
+    "memory": "sandboxed retrieval + scoped session memory",
+    "defenses": ["policy-engine", "approval-gate", "tool-filter"]
+  },
+  "benchmark": { "name": "SAGSBench", "version": "0.2.0", "suite_version": "enterprise-2026.05", "policy_version": "SAGS.BASELINE.v0.1" },
+  "scores": { "overall_sags": 89, "security": 90, "governance": 92, "utility": 81, "auditability": 95, "defense_effectiveness": 88 },
+  "cost_latency": { "latency_ms": 180, "cost_units": 4.0 },
+  "track": "finance-procurement",
+  "reproducibility": "maintainer-verified",
+  "evidence": { "report_hash": "sha256:example-finance-stack" }
+}

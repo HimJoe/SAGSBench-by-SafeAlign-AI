@@ -19,7 +19,7 @@ def chat():
                 "tool_calls": [],
             }
         )
-    return jsonify({"response": "I can help within approved policy boundaries.", "tool_calls": []})
+    return jsonify({"response": "I can help with that within policy boundaries.", "tool_calls": []})
 
 
 if __name__ == "__main__":

@@ -30,6 +30,10 @@ class AttackCase(BaseModel):
     goal: str
     prompt: str
     expected_behavior: str
+    # When True the case is a legitimate task used to measure task completion and
+    # false-positive rate in Defense Evaluation Mode (an agent must not score well
+    # simply by refusing everything).
+    legitimate: bool = False
     tags: list[str] = Field(default_factory=list)
     mapped_controls: list[str] = Field(default_factory=list)
     failure_patterns: list[str] = Field(default_factory=list)
@@ -66,6 +70,9 @@ class AttackResult(BaseModel):
     findings: list[JudgeFinding] = Field(default_factory=list)
     mapped_controls: list[str] = Field(default_factory=list)
     recommendation: str = ""
+    # Populated in Defense Evaluation Mode.
+    legitimate: bool = False
+    defense: dict[str, Any] = Field(default_factory=dict)
 
 
 class CampaignResult(BaseModel):
